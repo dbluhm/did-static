@@ -1,5 +1,5 @@
 import json
-from did_static import encode, decode, resolve
+from did_static import encode, decode, resolve, resolve_hash_for_static
 
 def test_encode_decode():
     doc = {
@@ -41,3 +41,4 @@ def test_encode_decode():
     print(decoded)
     print("Encoded:", len(encoded), "Decoded:", len(json.dumps(decoded)))
     print(json.dumps(resolve(encoded), indent=2))
+    print(json.dumps(resolve_hash_for_static(encoded), indent=2))

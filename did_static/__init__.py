@@ -273,17 +273,7 @@ class DocVisitor(ABC):
         return self.document
 
 
-def resolve(did: str) -> dict:
-    """Resolve static DID to document."""
-    if not did.startswith("did:static:"):
-        raise ValueError("Invalid DID")
-
-    document = decode(did)
-    document["id"] = did
-    codec, ident_bytes = multicodec.unwrap(multibase.decode(did[11:]))
-    ident_hash = multibase.encode(multihash.digest(ident_bytes, "sha2-256"), "base58btc")
-    document["alsoKnownAs"] = ["did:hash:" + ident_hash]
-    
+def decoded_to_resolved(did: str, document: dict) -> dict:
     class Visitor(DocVisitor):
         def visit_verification_method(self, value: dict):
             value["controller"] = did
@@ -304,3 +294,28 @@ def resolve(did: str) -> dict:
 
     document = Visitor(document).visit()
     return document
+
+
+def resolve(did: str) -> dict:
+    """Resolve static DID to document."""
+    if not did.startswith("did:static:"):
+        raise ValueError("Invalid DID")
+
+    document = decode(did)
+    document["id"] = did
+    codec, ident_bytes = multicodec.unwrap(multibase.decode(did[11:]))
+    ident_hash = multibase.encode(multihash.digest(ident_bytes, "sha2-256"), "base58btc")
+    document["alsoKnownAs"] = ["did:hash:" + ident_hash]
+    document = decoded_to_resolved(did, document)
+    return document
+
+
+def resolve_hash_for_static(did: str) -> dict:
+    """Resolve a did:hash document from a did:static DID."""
+    document = decode(did)
+    codec, ident_bytes = multicodec.unwrap(multibase.decode(did[11:]))
+    ident_hash = multibase.encode(multihash.digest(ident_bytes, "sha2-256"), "base58btc")
+    did_hash = "did:hash:" + ident_hash
+    document["alsoKnownAs"] = [did]
+    document["id"] = did_hash
+    return decoded_to_resolved(did_hash, document)
