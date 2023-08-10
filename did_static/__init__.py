@@ -1,11 +1,9 @@
-from abc import ABC, abstractmethod
-import json
-from copy import deepcopy
-from typing import Any, Dict, List, TypeVar, Union, cast, overload
+from typing import Any, Dict, TypeVar, cast, overload
 from multiformats import multibase, multicodec, multihash
 from msgpack import packb, unpackb
 
 from .terms import DEC_TERMS, ENC_TERMS
+from .visitor import DocVisitor
 
 VERSION = 0
 
@@ -19,19 +17,43 @@ V = TypeVar("V")
 
 
 def _decode_doc_keys(document: Dict[str, Any]):
-    if "verificationMethod" in document:
-        for vm in document["verificationMethod"]:
-            if "publicKeyMultibase" in vm:
-                vm["publicKeyMultibase"] = multibase.decode(vm["publicKeyMultibase"])
+    """Decode the keys in the document.
 
+    This is an optional step that results in smaller encoded size since we
+    prevent encoding the keys multiple times.
+    """
+    class Decoder(DocVisitor):
+        def visit_verification_method(self, value: dict) -> dict:
+            if "publicKeyMultibase" in value:
+                value["publicKeyMultibase"] = multibase.decode(
+                    value["publicKeyMultibase"]
+                )
+            return value
+
+        def visit_verification_relationship_embedded(self, value: dict):
+            return self.visit_verification_method(value)
+
+    return Decoder(document).visit()
 
 def _encode_doc_keys(document: Dict[str, Any]):
-    if "verificationMethod" in document:
-        for vm in document["verificationMethod"]:
-            if "publicKeyMultibase" in vm:
-                vm["publicKeyMultibase"] = multibase.encode(
-                    vm["publicKeyMultibase"], "base58btc"
+    """Encode the keys in the document.
+
+    This is an optional step that reverses the decode step. Doing this
+    encode/decode step results in smaller encoded size since we prevent
+    encoding the keys multiple times.
+    """
+    class Encoder(DocVisitor):
+        def visit_verification_method(self, value: dict) -> dict:
+            if "publicKeyMultibase" in value:
+                value["publicKeyMultibase"] = multibase.encode(
+                    value["publicKeyMultibase"], "base58btc"
                 )
+            return value
+
+        def visit_verification_relationship_embedded(self, value: dict):
+            return self.visit_verification_method(value)
+
+    return Encoder(document).visit()
 
 
 @overload
@@ -47,6 +69,7 @@ def _term_replace(terms: Dict[Any, Any], value: list) -> list:
     ...
 
 def _term_replace(terms: Dict[Any, Any], value: Any) -> Any:
+    """Replace values in a dictionary with the value looked up in terms."""
     if isinstance(value, dict):
         return {terms.get(k, k): _term_replace(terms, v) for k, v in value.items()}
     if isinstance(value, list):
@@ -56,14 +79,26 @@ def _term_replace(terms: Dict[Any, Any], value: Any) -> Any:
 
 
 def _encode_terms(value: dict) -> dict:
+    """Replace the long form of terms with the shorthand from the terms table."""
     return _term_replace(ENC_TERMS, value)
 
 
 def _decode_terms(value: dict) -> dict:
+    """Replace shorthands from the terms table with the long form."""
     return _term_replace(DEC_TERMS, value)
 
 
 def _generate_index(value: Dict[str, Any]) -> Dict[int, str]:
+    """Generate an index of all ids in the document.
+
+    This is an optional step that can slightly optimize the size of the encoded
+    document when referencing the same key from multiple verification
+    relationships, etc.
+
+    It does so by creating a map of all ids to their index in the document. Then
+    the encoding method will use this index to replace the id where it's used.
+    The index is included in the bundle for decoding.
+    """
     index = []
 
     def __generate_index(value: Any):
@@ -81,6 +116,7 @@ def _generate_index(value: Dict[str, Any]) -> Dict[int, str]:
 
 
 def encode(document: Dict[str, Any]) -> str:
+    """Encode a static DID from a document."""
     bundle = {}
     bundle[VERSION_KEY] = VERSION
     index = _generate_index(document)
@@ -111,169 +147,8 @@ def decode(did: str) -> dict:
     return document
 
 
-def _make_absolute(ident: str, value: dict) -> dict:
-    """Recursively make all relative identifiers absolute."""
-    value = deepcopy(value)
-    def __make_absolute(value: T) -> T:
-        if isinstance(value, dict):
-            if "id" in value and value["id"].startswith("#"):
-                relative = value["id"]
-                value["id"] = f"{ident}#{relative}"
-            for v in value.values():
-                _make_absolute(ident, v)
-        if isinstance(value, list):
-            for v in value:
-                _make_absolute(ident, v)
-        return value
-
-    return __make_absolute(value)
-
-
-class DocVisitor(ABC):
-    """Visitor class for manipulating the document."""
-    def __init__(self, document: dict):
-        self.document = document
-
-    def visit_verification_method(self, value: dict):
-        """Visit a verification method."""
-        return value
-
-    def visit_service(self, value: dict):
-        """Visit a service."""
-        return value
-
-    def visit_value_with_id(self, value: dict):
-        """Visit a value with an id."""
-        return value
-
-    def visit_verification_relationship_ref(self, value: str):
-        """Visit a verification relationship."""
-        return value
-
-    def visit_verification_relationship_embedded(self, value: dict):
-        """Visit an embedded verification method."""
-        return value
-
-    def visit_authentication_ref(self, value: str):
-        """Visit an authentication relationship."""
-        return value
-
-    def visit_authentication_embedded(self, value: dict):
-        """Visit an embedded authentication relationship."""
-        return value
-
-    def visit_key_agreement_ref(self, value: str):
-        """Visit a key agreement relationship."""
-        return value
-
-    def visit_key_agreement_embedded(self, value: dict):
-        """Visit an embedded key agreement relationship."""
-        return value
-
-    def visit_assertion_method_ref(self, value: str):
-        """Visit an assertion method relationship."""
-        return value
-
-    def visit_assertion_method_embedded(self, value: dict):
-        """Visit an embedded assertion method relationship."""
-        return value
-
-    def visit_capability_delegation_ref(self, value: str):
-        """Visit a capability delegation relationship."""
-        return value
-
-    def visit_capability_delegation_embedded(self, value: dict):
-        """Visit an embedded capability delegation relationship."""
-        return value
-
-    def visit_capability_invocation_ref(self, value: str):
-        """Visit a capability invocation relationship."""
-        return value
-
-    def visit_capability_invocation_embedded(self, value: dict):
-        """Visit an embedded capability invocation relationship."""
-        return value
-
-    def visit(self):
-        """Visit the document."""
-        vms = []
-        for value in self.document["verificationMethod"]:
-            value = self.visit_value_with_id(value)
-            value = self.visit_verification_method(value)
-            vms.append(value)
-        self.document["verificationMethod"] = vms
-
-        services = []
-        for value in self.document["service"]:
-            value = self.visit_value_with_id(value)
-            value = self.visit_service(value)
-            services.append(value)
-        self.document["service"] = services
-
-        authentication = []
-        for value in self.document["authentication"]:
-            if isinstance(value, str):
-                value = self.visit_verification_relationship_ref(value)
-                value = self.visit_authentication_ref(value)
-            if isinstance(value, dict):
-                value = self.visit_value_with_id(value)
-                value = self.visit_verification_relationship_embedded(value)
-                value = self.visit_authentication_embedded(value)
-            authentication.append(value)
-        self.document["authentication"] = authentication
-
-        key_agreement = []
-        for value in self.document["keyAgreement"]:
-            if isinstance(value, str):
-                value = self.visit_verification_relationship_ref(value)
-                value = self.visit_key_agreement_ref(value)
-            if isinstance(value, dict):
-                value = self.visit_value_with_id(value)
-                value = self.visit_verification_relationship_embedded(value)
-                value = self.visit_key_agreement_embedded(value)
-            key_agreement.append(value)
-        self.document["keyAgreement"] = key_agreement
-
-        assertion_method = []
-        for value in self.document["assertionMethod"]:
-            if isinstance(value, str):
-                value = self.visit_verification_relationship_ref(value)
-                value = self.visit_assertion_method_ref(value)
-            if isinstance(value, dict):
-                value = self.visit_value_with_id(value)
-                value = self.visit_verification_relationship_embedded(value)
-                value = self.visit_assertion_method_embedded(value)
-            assertion_method.append(value)
-        self.document["assertionMethod"] = assertion_method
-
-        capability_delegation = []
-        for value in self.document["capabilityDelegation"]:
-            if isinstance(value, str):
-                value = self.visit_verification_relationship_ref(value)
-                value = self.visit_capability_delegation_ref(value)
-            if isinstance(value, dict):
-                value = self.visit_value_with_id(value)
-                value = self.visit_verification_relationship_embedded(value)
-                value = self.visit_capability_delegation_embedded(value)
-            capability_delegation.append(value)
-        self.document["capabilityDelegation"] = capability_delegation
-
-        capability_invocation = []
-        for value in self.document["capabilityInvocation"]:
-            if isinstance(value, str):
-                value = self.visit_verification_relationship_ref(value)
-                value = self.visit_capability_invocation_ref(value)
-            if isinstance(value, dict):
-                value = self.visit_value_with_id(value)
-                value = self.visit_verification_relationship_embedded(value)
-                value = self.visit_capability_invocation_embedded(value)
-            capability_invocation.append(value)
-        self.document["capabilityInvocation"] = capability_invocation
-
-        return self.document
-
-
 def decoded_to_resolved(did: str, document: dict) -> dict:
+    """Add DID and controller to verification methods and relationships."""
     class Visitor(DocVisitor):
         def visit_verification_method(self, value: dict):
             value["controller"] = did
