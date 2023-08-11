@@ -1,15 +1,13 @@
-from typing import Any, Dict, TypeVar, cast, overload
-from multiformats import multibase, multicodec, multihash
-from msgpack import packb, unpackb
+from copy import deepcopy
+from typing import Any, Dict, TypeVar, overload
 
+from multiformats import multibase, multicodec, multihash
+
+from .bundle import Bundle
 from .terms import DEC_TERMS, ENC_TERMS
 from .visitor import DocVisitor
 
 VERSION = 0
-
-VERSION_KEY = 0x00
-DOC_KEY = 0x01
-INDEX_KEY = 0x02
 
 T = TypeVar("T")
 K = TypeVar("K")
@@ -84,12 +82,12 @@ def _term_replace(terms: Dict[Any, Any], value: Any) -> Any:
     return terms.get(value, value)
 
 
-def _encode_terms(value: dict) -> dict:
+def _reduce_terms(value: dict) -> dict:
     """Replace the long form of terms with the shorthand from the terms table."""
     return _term_replace(ENC_TERMS, value)
 
 
-def _decode_terms(value: dict) -> dict:
+def _expand_terms(value: dict) -> dict:
     """Replace shorthands from the terms table with the long form."""
     return _term_replace(DEC_TERMS, value)
 
@@ -121,36 +119,51 @@ def _generate_index(value: Dict[str, Any]) -> Dict[int, str]:
     return {i: v for i, v in enumerate(index)}
 
 
-def encode(document: Dict[str, Any]) -> str:
+def encode(
+    document: Dict[str, Any],
+    *,
+    replace_terms: bool = True,
+    index: bool = True,
+    flatten_keys: bool = False,
+) -> str:
     """Encode a static DID from a document."""
-    bundle = {}
-    bundle[VERSION_KEY] = VERSION
-    index = _generate_index(document)
-    # _decode_doc_keys(document)
+    document = deepcopy(document)
+    bundle = Bundle(VERSION)
+    bundle.replace_terms = replace_terms
+    bundle.use_index = index
+    bundle.flatten_keys = flatten_keys
+
     if index:
-        bundle[INDEX_KEY] = index
-        document = _term_replace({v: k for k, v in index.items()}, document)
-    document = _encode_terms(document)
-    bundle[DOC_KEY] = document
-    bundle_bytes = packb(bundle)
-    wrapped = multicodec.wrap("messagepack", cast(bytes, bundle_bytes))
-    encoded = multibase.encode(wrapped, "base58btc")
+        bundle.index = _generate_index(document)
+        if bundle.index:
+            document = _term_replace({v: k for k, v in bundle.index.items()}, document)
+    if flatten_keys:
+        _decode_doc_keys(document)
+    if replace_terms:
+        document = _reduce_terms(document)
+
+    bundle.document = document
+    encoded = bundle.serialize()
     return f"did:static:{encoded}"
 
 
 def decode(did: str) -> dict:
     """Decode static DID."""
     encoded = did.split(":", 2)[2]
-    wrapped = multibase.decode(encoded)
-    _, bundle_bytes = multicodec.unwrap(wrapped)
-    bundle = unpackb(bundle_bytes, strict_map_key=False)
-    document = cast(dict, bundle.pop(DOC_KEY))
-    version = bundle.pop(VERSION_KEY)
-    assert version == 0
-    if INDEX_KEY in bundle:
-        document = _term_replace(bundle.pop(INDEX_KEY), document)
-    document = _decode_terms(document)
-    # _encode_doc_keys(document)
+    bundle = Bundle.deserialize(encoded)
+    assert bundle.version == VERSION
+    document = bundle.document
+    if bundle.use_index:
+        if bundle.index is None:
+            raise ValueError("Index is missing")
+        document = _term_replace(bundle.index, document)
+
+    if bundle.replace_terms:
+        document = _expand_terms(document)
+
+    if bundle.flatten_keys:
+        _encode_doc_keys(document)
+
     return document
 
 
@@ -186,7 +199,7 @@ def resolve(did: str) -> dict:
 
     document = decode(did)
     document["id"] = did
-    codec, ident_bytes = multicodec.unwrap(multibase.decode(did[11:]))
+    _, ident_bytes = multicodec.unwrap(multibase.decode(did[11:]))
     ident_hash = multibase.encode(
         multihash.digest(ident_bytes, "sha2-256"), "base58btc"
     )
@@ -198,7 +211,7 @@ def resolve(did: str) -> dict:
 def resolve_hash_for_static(did: str) -> dict:
     """Resolve a did:hash document from a did:static DID."""
     document = decode(did)
-    codec, ident_bytes = multicodec.unwrap(multibase.decode(did[11:]))
+    _, ident_bytes = multicodec.unwrap(multibase.decode(did[11:]))
     ident_hash = multibase.encode(
         multihash.digest(ident_bytes, "sha2-256"), "base58btc"
     )
