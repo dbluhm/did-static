@@ -1,4 +1,6 @@
 import json
+from base64 import urlsafe_b64encode
+from multiformats import multibase
 import pytest
 from did_static import encode, decode, resolve, resolve_hash_for_static
 
@@ -38,8 +40,23 @@ DOC = {
 }
 
 
-def test_encode_decode():
-    encoded = encode(DOC)
+@pytest.mark.parametrize(
+    ("replace_terms", "index", "flatten_keys"),
+    [
+        (False, False, False),
+        (False, False, True),
+        (False, True, False),
+        (False, True, True),
+        (True, False, False),
+        (True, False, True),
+        (True, True, False),
+        (True, True, True),
+    ],
+)
+def test_encode_decode(replace_terms, index, flatten_keys):
+    encoded = encode(
+        DOC, replace_terms=replace_terms, index=index, flatten_keys=flatten_keys
+    )
     decoded = decode(encoded)
     assert decoded == DOC
 
@@ -71,17 +88,41 @@ def test_compression(replace_terms, index, flatten_keys):
     def _report_compression(encoded):
         decoded = decode(encoded)
         encoded_len = len(encoded)
-        decoded_len = len(json.dumps(decoded, separators=(",", ":")))
-        print(
-            "Encoded:",
-            encoded_len,
-            "Decoded:",
-            decoded_len,
+        decoded_len_no_whitespace = len(json.dumps(decoded, separators=(",", ":")))
+        decoded_len = len(json.dumps(decoded))
+        decoded_len_b58 = (
+            len(
+                multibase.encode(
+                    json.dumps(decoded, separators=(",", ":")).encode(), "base58btc"
+                )
+            )
+            - 1
         )
-        print("Compression:", encoded_len / decoded_len)
+        decoded_len_b64 = len(
+            urlsafe_b64encode(json.dumps(decoded, separators=(",", ":")).encode())
+        )
+        print("    - Encoded (including `did:static:`):", encoded_len)
+        print(
+            "    - Decoded (plain json string, no whitespace):",
+            decoded_len_no_whitespace,
+        )
+        print("    - Decoded (plain json string, with whitespace):", decoded_len)
+        print("    - Decoded Base 58 (json string, no whitespace):", decoded_len_b58)
+        print(
+            "    - Decoded Base 64 url (json string, no whitespace):", decoded_len_b64
+        )
+        print(
+            "    - Compression (encoded / decoded b64):", encoded_len / decoded_len_b64
+        )
 
+    print()
     print(
-        "replace terms:", replace_terms, "index:", index, "flatten keys:", flatten_keys
+        "- Encode options: replace terms:",
+        replace_terms,
+        "index:",
+        index,
+        "flatten keys:",
+        flatten_keys,
     )
     _report_compression(
         encode(DOC, replace_terms=replace_terms, index=index, flatten_keys=flatten_keys)

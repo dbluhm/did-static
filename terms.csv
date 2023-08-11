@@ -1,0 +1,257 @@
+term,tag,integer,code
+@context,core,0,0x00
+alsoKnownAs,core,1,0x01
+assertionMethod,core,2,0x02
+authentication,core,3,0x03
+capabilityDelegation,core,4,0x04
+capabilityInvocation,core,5,0x05
+controller,core,6,0x06
+id,core,7,0x07
+keyAgreement,core,8,0x08
+service,core,9,0x09
+serviceEndpoint,core,10,0x0A
+type,core,11,0x0B
+verificationMethod,core,12,0x0C
+publicKeyJwk,core,13,0x0D
+publicKeyMultibase,core,14,0x0E
+reserved for core,core,15,0x0F
+reserved for core,core,16,0x10
+reserved for core,core,17,0x11
+reserved for core,core,18,0x12
+reserved for core,core,19,0x13
+reserved for core,core,20,0x14
+reserved for core,core,21,0x15
+reserved for core,core,22,0x16
+reserved for core,core,23,0x17
+reserved for core,core,24,0x18
+reserved for core,core,25,0x19
+reserved for core,core,26,0x1A
+reserved for core,core,27,0x1B
+reserved for core,core,28,0x1C
+reserved for core,core,29,0x1D
+reserved for core,core,30,0x1E
+reserved for core,core,31,0x1F
+Bls12381G1Key2020,vm types,32,0x20
+Bls12381G2Key2020,vm types,33,0x21
+EcdsaSecp256k1VerificationKey2019,vm types,34,0x22
+Ed25519VerificationKey2018,vm types,35,0x23
+Ed25519VerificationKey2020,vm types,36,0x24
+JsonWebKey2020,vm types,37,0x25
+PgpVerificationKey2021,vm types,38,0x26
+RsaVerificationKey2018,vm types,39,0x27
+X25519KeyAgreementKey2019,vm types,40,0x28
+X25519KeyAgreementKey2020,vm types,41,0x29
+reserved for vm types,vm types,42,0x2A
+reserved for vm types,vm types,43,0x2B
+reserved for vm types,vm types,44,0x2C
+reserved for vm types,vm types,45,0x2D
+reserved for vm types,vm types,46,0x2E
+reserved for vm types,vm types,47,0x2F
+reserved for vm types,vm types,48,0x30
+reserved for vm types,vm types,49,0x31
+reserved for vm types,vm types,50,0x32
+reserved for vm types,vm types,51,0x33
+reserved for vm types,vm types,52,0x34
+reserved for vm types,vm types,53,0x35
+reserved for vm types,vm types,54,0x36
+reserved for vm types,vm types,55,0x37
+reserved for vm types,vm types,56,0x38
+reserved for vm types,vm types,57,0x39
+reserved for vm types,vm types,58,0x3A
+reserved for vm types,vm types,59,0x3B
+reserved for vm types,vm types,60,0x3C
+reserved for vm types,vm types,61,0x3D
+reserved for vm types,vm types,62,0x3E
+reserved for vm types,vm types,63,0x3F
+LinkedDomains,service types,64,0x40
+DIDCommMessaging,service types,65,0x41
+did-communication,service types,66,0x42
+reserved for service types,service types,67,0x43
+reserved for service types,service types,68,0x44
+reserved for service types,service types,69,0x45
+reserved for service types,service types,70,0x46
+reserved for service types,service types,71,0x47
+reserved for service types,service types,72,0x48
+reserved for service types,service types,73,0x49
+reserved for service types,service types,74,0x4A
+reserved for service types,service types,75,0x4B
+reserved for service types,service types,76,0x4C
+reserved for service types,service types,77,0x4D
+reserved for service types,service types,78,0x4E
+reserved for service types,service types,79,0x4F
+accept,service elements,80,0x50
+routingKeys,service elements,81,0x51
+reserved for service elements,service elements,82,0x52
+reserved for service elements,service elements,83,0x53
+reserved for service elements,service elements,84,0x54
+reserved for service elements,service elements,85,0x55
+reserved for service elements,service elements,86,0x56
+reserved for service elements,service elements,87,0x57
+reserved for service elements,service elements,88,0x58
+reserved for service elements,service elements,89,0x59
+reserved for service elements,service elements,90,0x5A
+reserved for service elements,service elements,91,0x5B
+reserved for service elements,service elements,92,0x5C
+reserved for service elements,service elements,93,0x5D
+reserved for service elements,service elements,94,0x5E
+reserved for service elements,service elements,95,0x5F
+https://www.w3.org/ns/did/v1,contexts,96,0x60
+https://w3id.org/security/suites/ed25519-2020/v1,contexts,97,0x61
+https://w3id.org/security/suites/x25519-2020/v1,contexts,98,0x62
+reserved for contexts,contexts,99,0x63
+reserved for contexts,contexts,100,0x64
+reserved for contexts,contexts,101,0x65
+reserved for contexts,contexts,102,0x66
+reserved for contexts,contexts,103,0x67
+reserved for contexts,contexts,104,0x68
+reserved for contexts,contexts,105,0x69
+reserved for contexts,contexts,106,0x6A
+reserved for contexts,contexts,107,0x6B
+reserved for contexts,contexts,108,0x6C
+reserved for contexts,contexts,109,0x6D
+reserved for contexts,contexts,110,0x6E
+reserved for contexts,contexts,111,0x6F
+reserved for contexts,contexts,112,0x70
+reserved for contexts,contexts,113,0x71
+reserved for contexts,contexts,114,0x72
+reserved for contexts,contexts,115,0x73
+reserved for contexts,contexts,116,0x74
+reserved for contexts,contexts,117,0x75
+reserved for contexts,contexts,118,0x76
+reserved for contexts,contexts,119,0x77
+reserved for contexts,contexts,120,0x78
+reserved for contexts,contexts,121,0x79
+reserved for contexts,contexts,122,0x7A
+reserved for contexts,contexts,123,0x7B
+reserved for contexts,contexts,124,0x7C
+reserved for contexts,contexts,125,0x7D
+reserved for contexts,contexts,126,0x7E
+reserved for contexts,contexts,127,0x7F
+reserved for future use,future,128,0x80
+reserved for future use,future,129,0x81
+reserved for future use,future,130,0x82
+reserved for future use,future,131,0x83
+reserved for future use,future,132,0x84
+reserved for future use,future,133,0x85
+reserved for future use,future,134,0x86
+reserved for future use,future,135,0x87
+reserved for future use,future,136,0x88
+reserved for future use,future,137,0x89
+reserved for future use,future,138,0x8A
+reserved for future use,future,139,0x8B
+reserved for future use,future,140,0x8C
+reserved for future use,future,141,0x8D
+reserved for future use,future,142,0x8E
+reserved for future use,future,143,0x8F
+reserved for future use,future,144,0x90
+reserved for future use,future,145,0x91
+reserved for future use,future,146,0x92
+reserved for future use,future,147,0x93
+reserved for future use,future,148,0x94
+reserved for future use,future,149,0x95
+reserved for future use,future,150,0x96
+reserved for future use,future,151,0x97
+reserved for future use,future,152,0x98
+reserved for future use,future,153,0x99
+reserved for future use,future,154,0x9A
+reserved for future use,future,155,0x9B
+reserved for future use,future,156,0x9C
+reserved for future use,future,157,0x9D
+reserved for future use,future,158,0x9E
+reserved for future use,future,159,0x9F
+reserved for future use,future,160,0xA0
+reserved for future use,future,161,0xA1
+reserved for future use,future,162,0xA2
+reserved for future use,future,163,0xA3
+reserved for future use,future,164,0xA4
+reserved for future use,future,165,0xA5
+reserved for future use,future,166,0xA6
+reserved for future use,future,167,0xA7
+reserved for future use,future,168,0xA8
+reserved for future use,future,169,0xA9
+reserved for future use,future,170,0xAA
+reserved for future use,future,171,0xAB
+reserved for future use,future,172,0xAC
+reserved for future use,future,173,0xAD
+reserved for future use,future,174,0xAE
+reserved for future use,future,175,0xAF
+reserved for future use,future,176,0xB0
+reserved for future use,future,177,0xB1
+reserved for future use,future,178,0xB2
+reserved for future use,future,179,0xB3
+reserved for future use,future,180,0xB4
+reserved for future use,future,181,0xB5
+reserved for future use,future,182,0xB6
+reserved for future use,future,183,0xB7
+reserved for future use,future,184,0xB8
+reserved for future use,future,185,0xB9
+reserved for future use,future,186,0xBA
+reserved for future use,future,187,0xBB
+reserved for future use,future,188,0xBC
+reserved for future use,future,189,0xBD
+reserved for future use,future,190,0xBE
+reserved for future use,future,191,0xBF
+reserved for future use,future,192,0xC0
+reserved for future use,future,193,0xC1
+reserved for future use,future,194,0xC2
+reserved for future use,future,195,0xC3
+reserved for future use,future,196,0xC4
+reserved for future use,future,197,0xC5
+reserved for future use,future,198,0xC6
+reserved for future use,future,199,0xC7
+reserved for future use,future,200,0xC8
+reserved for future use,future,201,0xC9
+reserved for future use,future,202,0xCA
+reserved for future use,future,203,0xCB
+reserved for future use,future,204,0xCC
+reserved for future use,future,205,0xCD
+reserved for future use,future,206,0xCE
+reserved for future use,future,207,0xCF
+reserved for future use,future,208,0xD0
+reserved for future use,future,209,0xD1
+reserved for future use,future,210,0xD2
+reserved for future use,future,211,0xD3
+reserved for future use,future,212,0xD4
+reserved for future use,future,213,0xD5
+reserved for future use,future,214,0xD6
+reserved for future use,future,215,0xD7
+reserved for future use,future,216,0xD8
+reserved for future use,future,217,0xD9
+reserved for future use,future,218,0xDA
+reserved for future use,future,219,0xDB
+reserved for future use,future,220,0xDC
+reserved for future use,future,221,0xDD
+reserved for future use,future,222,0xDE
+reserved for future use,future,223,0xDF
+reserved for future use,future,224,0xE0
+reserved for future use,future,225,0xE1
+reserved for future use,future,226,0xE2
+reserved for future use,future,227,0xE3
+reserved for future use,future,228,0xE4
+reserved for future use,future,229,0xE5
+reserved for future use,future,230,0xE6
+reserved for future use,future,231,0xE7
+reserved for future use,future,232,0xE8
+reserved for future use,future,233,0xE9
+reserved for future use,future,234,0xEA
+reserved for future use,future,235,0xEB
+reserved for future use,future,236,0xEC
+reserved for future use,future,237,0xED
+reserved for future use,future,238,0xEE
+reserved for future use,future,239,0xEF
+reserved for future use,future,240,0xF0
+reserved for future use,future,241,0xF1
+reserved for future use,future,242,0xF2
+reserved for future use,future,243,0xF3
+reserved for future use,future,244,0xF4
+reserved for future use,future,245,0xF5
+reserved for future use,future,246,0xF6
+reserved for future use,future,247,0xF7
+reserved for future use,future,248,0xF8
+reserved for future use,future,249,0xF9
+reserved for future use,future,250,0xFA
+reserved for future use,future,251,0xFB
+reserved for future use,future,252,0xFC
+reserved for future use,future,253,0xFD
+reserved for future use,future,254,0xFE
+reserved for future use,future,255,0xFF

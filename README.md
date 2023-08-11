@@ -5,7 +5,7 @@
 did:static:z5pU4iAPY5v6yrYBMmKjWANNaEdMeV7So7Hor8aynbHpJ47zj3DX6CqjQUAqjHiu4jr6HWFuNzjGcyHzJw3oUfcx5umudmV5H3mArhV4B3ibRgT1dN9H6XifZpaUFuZpeYx8SroRXKncvZhhaBRXBBQ36emZYZ9GuFuqR8C2F5p7ZGGnWiMFqbWckNq1wbbBUxMn4aowDRmcYUKAqZ3VCELRtmoz6PRkMDLo4ZR8Yvo3wwosphukawM2MkNyB1V3aimpAtGG8uiMvShR4Mm2rXn89DAE2u92jNwg2GZ4sCp5xp1tAyAusqUp9f4cbzKQSGsB7RreAVN7Wcox7dvjFUGpDsBEfQ7XbryZmMUfSJ8VPfRB9qhDaLBWF
 ```
 
-#### Example Input to `encode()`
+#### Example Input Document to `encode()`
 
 ```json
 {
@@ -56,8 +56,69 @@ did:static:z5pU4iAPY5v6yrYBMmKjWANNaEdMeV7So7Hor8aynbHpJ47zj3DX6CqjQUAqjHiu4jr6H
 ```
 
 #### Size Stats
-- Encoded: 320 bytes
-- Decoded: 769 bytes
+
+- Encode options: replace terms: False index: False flatten keys: False
+    - Encoded (including `did:static:`): 904
+    - Decoded (plain json string, no whitespace): 732
+    - Decoded (plain json string, with whitespace): 769
+    - Decoded Base 58 (json string, no whitespace): 1000
+    - Decoded Base 64 url (json string, no whitespace): 976
+    - Compression (encoded / decoded b64): 0.9262295081967213
+- Encode options: replace terms: False index: False flatten keys: True
+    - Encoded (including `did:static:`): 866
+    - Decoded (plain json string, no whitespace): 732
+    - Decoded (plain json string, with whitespace): 769
+    - Decoded Base 58 (json string, no whitespace): 1000
+    - Decoded Base 64 url (json string, no whitespace): 976
+    - Compression (encoded / decoded b64): 0.8872950819672131
+- Encode options: replace terms: False index: True flatten keys: False
+    - Encoded (including `did:static:`): 852
+    - Decoded (plain json string, no whitespace): 732
+    - Decoded (plain json string, with whitespace): 769
+    - Decoded Base 58 (json string, no whitespace): 1000
+    - Decoded Base 64 url (json string, no whitespace): 976
+    - Compression (encoded / decoded b64): 0.8729508196721312
+- Encode options: replace terms: False index: True flatten keys: True
+    - Encoded (including `did:static:`): 814
+    - Decoded (plain json string, no whitespace): 732
+    - Decoded (plain json string, with whitespace): 769
+    - Decoded Base 58 (json string, no whitespace): 1000
+    - Decoded Base 64 url (json string, no whitespace): 976
+    - Compression (encoded / decoded b64): 0.8340163934426229
+- Encode options: replace terms: True index: False flatten keys: False
+    - Encoded (including `did:static:`): 369
+    - Decoded (plain json string, no whitespace): 732
+    - Decoded (plain json string, with whitespace): 769
+    - Decoded Base 58 (json string, no whitespace): 1000
+    - Decoded Base 64 url (json string, no whitespace): 976
+    - Compression (encoded / decoded b64): 0.3780737704918033
+- Encode options: replace terms: True index: False flatten keys: True
+    - Encoded (including `did:static:`): 331
+    - Decoded (plain json string, no whitespace): 732
+    - Decoded (plain json string, with whitespace): 769
+    - Decoded Base 58 (json string, no whitespace): 1000
+    - Decoded Base 64 url (json string, no whitespace): 976
+    - Compression (encoded / decoded b64): 0.3391393442622951
+- Encode options: replace terms: True index: True flatten keys: False
+    - Encoded (including `did:static:`): 317
+    - Decoded (plain json string, no whitespace): 732
+    - Decoded (plain json string, with whitespace): 769
+    - Decoded Base 58 (json string, no whitespace): 1000
+    - Decoded Base 64 url (json string, no whitespace): 976
+    - Compression (encoded / decoded b64): 0.32479508196721313
+- Encode options: replace terms: True index: True flatten keys: True
+    - Encoded (including `did:static:`): 279
+    - Decoded (plain json string, no whitespace): 732
+    - Decoded (plain json string, with whitespace): 769
+    - Decoded Base 58 (json string, no whitespace): 1000
+    - Decoded Base 64 url (json string, no whitespace): 976
+    - Compression (encoded / decoded b64): 0.2858606557377049
+
+As visible in these stats, it's important to use the `replace_terms` encoding
+option to see a significant overall reduction in size. The other options offer
+additional reduction in size but the difference is less significant. In all
+cases, `did:static` is still smaller than just base64 url encoding the
+document.
 
 #### Resolved Doc
 

@@ -4,7 +4,7 @@ from typing import Any, Dict, TypeVar, overload
 from multiformats import multibase, multicodec, multihash
 
 from .bundle import Bundle
-from .terms import DEC_TERMS, ENC_TERMS
+from .terms import TERM_TO_CODE, CODE_TO_TERM
 from .visitor import DocVisitor
 
 VERSION = 0
@@ -84,12 +84,12 @@ def _term_replace(terms: Dict[Any, Any], value: Any) -> Any:
 
 def _reduce_terms(value: dict) -> dict:
     """Replace the long form of terms with the shorthand from the terms table."""
-    return _term_replace(ENC_TERMS, value)
+    return _term_replace(TERM_TO_CODE, value)
 
 
 def _expand_terms(value: dict) -> dict:
     """Replace shorthands from the terms table with the long form."""
-    return _term_replace(DEC_TERMS, value)
+    return _term_replace(CODE_TO_TERM, value)
 
 
 def _generate_index(value: Dict[str, Any]) -> Dict[int, str]:
@@ -116,7 +116,7 @@ def _generate_index(value: Dict[str, Any]) -> Dict[int, str]:
                 __generate_index(v)
 
     __generate_index(value)
-    return {i: v for i, v in enumerate(index)}
+    return {i: v for i, v in enumerate(index, start=256)}
 
 
 def encode(
@@ -137,8 +137,10 @@ def encode(
         bundle.index = _generate_index(document)
         if bundle.index:
             document = _term_replace({v: k for k, v in bundle.index.items()}, document)
+
     if flatten_keys:
         _decode_doc_keys(document)
+
     if replace_terms:
         document = _reduce_terms(document)
 
@@ -153,16 +155,17 @@ def decode(did: str) -> dict:
     bundle = Bundle.deserialize(encoded)
     assert bundle.version == VERSION
     document = bundle.document
-    if bundle.use_index:
-        if bundle.index is None:
-            raise ValueError("Index is missing")
-        document = _term_replace(bundle.index, document)
 
     if bundle.replace_terms:
         document = _expand_terms(document)
 
     if bundle.flatten_keys:
         _encode_doc_keys(document)
+
+    if bundle.use_index:
+        if bundle.index is None:
+            raise ValueError("Index is missing")
+        document = _term_replace(bundle.index, document)
 
     return document
 
