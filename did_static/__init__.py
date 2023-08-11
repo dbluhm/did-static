@@ -7,9 +7,9 @@ from .visitor import DocVisitor
 
 VERSION = 0
 
-VERSION_KEY = 0x01
-DOC_KEY = 0x02
-INDEX_KEY = 0x03
+VERSION_KEY = 0x00
+DOC_KEY = 0x01
+INDEX_KEY = 0x02
 
 T = TypeVar("T")
 K = TypeVar("K")
@@ -22,6 +22,7 @@ def _decode_doc_keys(document: Dict[str, Any]):
     This is an optional step that results in smaller encoded size since we
     prevent encoding the keys multiple times.
     """
+
     class Decoder(DocVisitor):
         def visit_verification_method(self, value: dict) -> dict:
             if "publicKeyMultibase" in value:
@@ -35,6 +36,7 @@ def _decode_doc_keys(document: Dict[str, Any]):
 
     return Decoder(document).visit()
 
+
 def _encode_doc_keys(document: Dict[str, Any]):
     """Encode the keys in the document.
 
@@ -42,6 +44,7 @@ def _encode_doc_keys(document: Dict[str, Any]):
     encode/decode step results in smaller encoded size since we prevent
     encoding the keys multiple times.
     """
+
     class Encoder(DocVisitor):
         def visit_verification_method(self, value: dict) -> dict:
             if "publicKeyMultibase" in value:
@@ -60,13 +63,16 @@ def _encode_doc_keys(document: Dict[str, Any]):
 def _term_replace(terms: Dict[K, V], value: K) -> V:
     ...
 
+
 @overload
 def _term_replace(terms: Dict[Any, Any], value: dict) -> dict:
     ...
 
+
 @overload
 def _term_replace(terms: Dict[Any, Any], value: list) -> list:
     ...
+
 
 def _term_replace(terms: Dict[Any, Any], value: Any) -> Any:
     """Replace values in a dictionary with the value looked up in terms."""
@@ -140,6 +146,7 @@ def decode(did: str) -> dict:
     bundle = unpackb(bundle_bytes, strict_map_key=False)
     document = cast(dict, bundle.pop(DOC_KEY))
     version = bundle.pop(VERSION_KEY)
+    assert version == 0
     if INDEX_KEY in bundle:
         document = _term_replace(bundle.pop(INDEX_KEY), document)
     document = _decode_terms(document)
@@ -149,6 +156,7 @@ def decode(did: str) -> dict:
 
 def decoded_to_resolved(did: str, document: dict) -> dict:
     """Add DID and controller to verification methods and relationships."""
+
     class Visitor(DocVisitor):
         def visit_verification_method(self, value: dict):
             value["controller"] = did
@@ -179,7 +187,9 @@ def resolve(did: str) -> dict:
     document = decode(did)
     document["id"] = did
     codec, ident_bytes = multicodec.unwrap(multibase.decode(did[11:]))
-    ident_hash = multibase.encode(multihash.digest(ident_bytes, "sha2-256"), "base58btc")
+    ident_hash = multibase.encode(
+        multihash.digest(ident_bytes, "sha2-256"), "base58btc"
+    )
     document["alsoKnownAs"] = ["did:hash:" + ident_hash]
     document = decoded_to_resolved(did, document)
     return document
@@ -189,7 +199,9 @@ def resolve_hash_for_static(did: str) -> dict:
     """Resolve a did:hash document from a did:static DID."""
     document = decode(did)
     codec, ident_bytes = multicodec.unwrap(multibase.decode(did[11:]))
-    ident_hash = multibase.encode(multihash.digest(ident_bytes, "sha2-256"), "base58btc")
+    ident_hash = multibase.encode(
+        multihash.digest(ident_bytes, "sha2-256"), "base58btc"
+    )
     did_hash = "did:hash:" + ident_hash
     document["alsoKnownAs"] = [did]
     document["id"] = did_hash

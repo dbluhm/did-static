@@ -35,7 +35,6 @@ TERMS = [
     "verificationMethod",
 ]
 
-ENC_TERMS = {term: index.to_bytes(1) for index, term in enumerate(TERMS)}
+ENC_TERMS = {term: index for index, term in enumerate(TERMS)}
 
-DEC_TERMS = {index.to_bytes(1): term for index, term in enumerate(TERMS)}
-
+DEC_TERMS = {index: term for index, term in enumerate(TERMS)}

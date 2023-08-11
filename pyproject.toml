@@ -19,6 +19,9 @@ pytest = "^7.4.0"
 pre-commit = "^3.3.3"
 ruff = "^0.0.284"
 
+[tool.ruff]
+line-length = 88
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
