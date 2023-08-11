@@ -56,7 +56,7 @@ did:static:z5pU4iAPY5v6yrYBMmKjWANNaEdMeV7So7Hor8aynbHpJ47zj3DX6CqjQUAqjHiu4jr6H
 ```
 
 #### Size Stats
-- Encoded: 388 bytes
+- Encoded: 320 bytes
 - Decoded: 769 bytes
 
 #### Resolved Doc
