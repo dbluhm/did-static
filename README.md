@@ -1,8 +1,21 @@
 # Static DID Method
 
+`did:static` is a statically resolvable DID method. The DID itself, plus the
+application of some encoding/decoding rules, _is_ the DID Document. The encoding
+rules will generally do a pretty good job of compressing an average DID Document.
+However, `did:static`DIDs will still be pretty long. To address this in
+situations where DID size can be problematic, `did:static` DIDs always resolve to
+documents containing an `alsoKnownAs` to a `did:hash` DID. This DID is a hash
+of the `did:static` (or rather, over the bytes encoded in the method specific
+identifier). The `did:hash` DID should be considered an alias to the
+`did:static` DID. The DID itself is not independently resolvable but for users
+who want to be able to use the shorthand of a `did:static`, they should store a
+mapping from the `did:hash` DID to the `did:static` DID. Read more in [Also
+Known As](#also-known-as).
+
 #### Example DID:
 ```
-did:static:z5pU4iAPY5v6yrYBMmKjWANNaEdMeV7So7Hor8aynbHpJ47zj3DX6CqjQUAqjHiu4jr6HWFuNzjGcyHzJw3oUfcx5umudmV5H3mArhV4B3ibRgT1dN9H6XifZpaUFuZpeYx8SroRXKncvZhhaBRXBBQ36emZYZ9GuFuqR8C2F5p7ZGGnWiMFqbWckNq1wbbBUxMn4aowDRmcYUKAqZ3VCELRtmoz6PRkMDLo4ZR8Yvo3wwosphukawM2MkNyB1V3aimpAtGG8uiMvShR4Mm2rXn89DAE2u92jNwg2GZ4sCp5xp1tAyAusqUp9f4cbzKQSGsB7RreAVN7Wcox7dvjFUGpDsBEfQ7XbryZmMUfSJ8VPfRB9qhDaLBWF
+did:static:z6Szgfc8oKodkFz5URq5eNRNW7ZPUq5gwQcF9CDA9TMD7SSq2dgaBNpArJ4bzkXDTAHTydL7imPge541AGNFCEZc4f7dLvKFVRwrdFUiSDJykUmLh1GHUxfcYKxvtUDKsSPVDKnJjUHhPbRTEeFKTQdxsyUc4rqSXREX1tGGeJ6DeGq3GgJ1vAf3b92727rfgiZDBtNYMKz3uJp932p8nt9RkdKMaeGk9x5v3ia4nHQwnCWDkm488wVT4GTkpkdZUxkgtKnudiLP3BAhsoaDJo7r9V1iZXGKLLqKsQYVpaUshi6riamno2TphNbJxYjDgeYGp2BoYhyYDUEb
 ```
 
 #### Example Input Document to `encode()`
@@ -131,36 +144,36 @@ document.
   ],
   "verificationMethod": [
     {
-      "id": "did:static:z5pU4iAPY5v6yrYBMmKjWANNaEdMeV7So7Hor8aynbHpJ47zj3DX6CqjQUAqjHiu4jr6HWFuNzjGcyHzJw3oUfcx5umudmV5H3mArhV4B3ibRgT1dN9H6XifZpaUFuZpeYx8SroRXKncvZhhaBRXBBQ36emZYZ9GuFuqR8C2F5p7ZGGnWiMFqbWckNq1wbbBUxMn4aowDRmcYUKAqZ3VCELRtmoz6PRkMDLo4ZR8Yvo3wwosphukawM2MkNyB1V3aimpAtGG8uiMvShR4Mm2rXn89DAE2u92jNwg2GZ4sCp5xp1tAyAusqUp9f4cbzKQSGsB7RreAVN7Wcox7dvjFUGpDsBEfQ7XbryZmMUfSJ8VPfRB9qhDaLBWF#6LSqPZfn",
+      "id": "did:static:z6Szgfc8oKodkFz5URq5eNRNW7ZPUq5gwQcF9CDA9TMD7SSq2dgaBNpArJ4bzkXDTAHTydL7imPge541AGNFCEZc4f7dLvKFVRwrdFUiSDJykUmLh1GHUxfcYKxvtUDKsSPVDKnJjUHhPbRTEeFKTQdxsyUc4rqSXREX1tGGeJ6DeGq3GgJ1vAf3b92727rfgiZDBtNYMKz3uJp932p8nt9RkdKMaeGk9x5v3ia4nHQwnCWDkm488wVT4GTkpkdZUxkgtKnudiLP3BAhsoaDJo7r9V1iZXGKLLqKsQYVpaUshi6riamno2TphNbJxYjDgeYGp2BoYhyYDUEb#6LSqPZfn",
       "type": "X25519KeyAgreementKey2020",
       "publicKeyMultibase": "z6LSqPZfn9krvgXma2icTMKf2uVcYhKXsudCmPoUzqGYW24U",
-      "controller": "did:static:z5pU4iAPY5v6yrYBMmKjWANNaEdMeV7So7Hor8aynbHpJ47zj3DX6CqjQUAqjHiu4jr6HWFuNzjGcyHzJw3oUfcx5umudmV5H3mArhV4B3ibRgT1dN9H6XifZpaUFuZpeYx8SroRXKncvZhhaBRXBBQ36emZYZ9GuFuqR8C2F5p7ZGGnWiMFqbWckNq1wbbBUxMn4aowDRmcYUKAqZ3VCELRtmoz6PRkMDLo4ZR8Yvo3wwosphukawM2MkNyB1V3aimpAtGG8uiMvShR4Mm2rXn89DAE2u92jNwg2GZ4sCp5xp1tAyAusqUp9f4cbzKQSGsB7RreAVN7Wcox7dvjFUGpDsBEfQ7XbryZmMUfSJ8VPfRB9qhDaLBWF"
+      "controller": "did:static:z6Szgfc8oKodkFz5URq5eNRNW7ZPUq5gwQcF9CDA9TMD7SSq2dgaBNpArJ4bzkXDTAHTydL7imPge541AGNFCEZc4f7dLvKFVRwrdFUiSDJykUmLh1GHUxfcYKxvtUDKsSPVDKnJjUHhPbRTEeFKTQdxsyUc4rqSXREX1tGGeJ6DeGq3GgJ1vAf3b92727rfgiZDBtNYMKz3uJp932p8nt9RkdKMaeGk9x5v3ia4nHQwnCWDkm488wVT4GTkpkdZUxkgtKnudiLP3BAhsoaDJo7r9V1iZXGKLLqKsQYVpaUshi6riamno2TphNbJxYjDgeYGp2BoYhyYDUEb"
     },
     {
-      "id": "did:static:z5pU4iAPY5v6yrYBMmKjWANNaEdMeV7So7Hor8aynbHpJ47zj3DX6CqjQUAqjHiu4jr6HWFuNzjGcyHzJw3oUfcx5umudmV5H3mArhV4B3ibRgT1dN9H6XifZpaUFuZpeYx8SroRXKncvZhhaBRXBBQ36emZYZ9GuFuqR8C2F5p7ZGGnWiMFqbWckNq1wbbBUxMn4aowDRmcYUKAqZ3VCELRtmoz6PRkMDLo4ZR8Yvo3wwosphukawM2MkNyB1V3aimpAtGG8uiMvShR4Mm2rXn89DAE2u92jNwg2GZ4sCp5xp1tAyAusqUp9f4cbzKQSGsB7RreAVN7Wcox7dvjFUGpDsBEfQ7XbryZmMUfSJ8VPfRB9qhDaLBWF#6MkrCD1c",
+      "id": "did:static:z6Szgfc8oKodkFz5URq5eNRNW7ZPUq5gwQcF9CDA9TMD7SSq2dgaBNpArJ4bzkXDTAHTydL7imPge541AGNFCEZc4f7dLvKFVRwrdFUiSDJykUmLh1GHUxfcYKxvtUDKsSPVDKnJjUHhPbRTEeFKTQdxsyUc4rqSXREX1tGGeJ6DeGq3GgJ1vAf3b92727rfgiZDBtNYMKz3uJp932p8nt9RkdKMaeGk9x5v3ia4nHQwnCWDkm488wVT4GTkpkdZUxkgtKnudiLP3BAhsoaDJo7r9V1iZXGKLLqKsQYVpaUshi6riamno2TphNbJxYjDgeYGp2BoYhyYDUEb#6MkrCD1c",
       "type": "Ed25519VerificationKey2020",
       "publicKeyMultibase": "z6MkrCD1csqtgdj8sjrsu8jxcbeyP6m7LiK87NzhfWqio5yr",
-      "controller": "did:static:z5pU4iAPY5v6yrYBMmKjWANNaEdMeV7So7Hor8aynbHpJ47zj3DX6CqjQUAqjHiu4jr6HWFuNzjGcyHzJw3oUfcx5umudmV5H3mArhV4B3ibRgT1dN9H6XifZpaUFuZpeYx8SroRXKncvZhhaBRXBBQ36emZYZ9GuFuqR8C2F5p7ZGGnWiMFqbWckNq1wbbBUxMn4aowDRmcYUKAqZ3VCELRtmoz6PRkMDLo4ZR8Yvo3wwosphukawM2MkNyB1V3aimpAtGG8uiMvShR4Mm2rXn89DAE2u92jNwg2GZ4sCp5xp1tAyAusqUp9f4cbzKQSGsB7RreAVN7Wcox7dvjFUGpDsBEfQ7XbryZmMUfSJ8VPfRB9qhDaLBWF"
+      "controller": "did:static:z6Szgfc8oKodkFz5URq5eNRNW7ZPUq5gwQcF9CDA9TMD7SSq2dgaBNpArJ4bzkXDTAHTydL7imPge541AGNFCEZc4f7dLvKFVRwrdFUiSDJykUmLh1GHUxfcYKxvtUDKsSPVDKnJjUHhPbRTEeFKTQdxsyUc4rqSXREX1tGGeJ6DeGq3GgJ1vAf3b92727rfgiZDBtNYMKz3uJp932p8nt9RkdKMaeGk9x5v3ia4nHQwnCWDkm488wVT4GTkpkdZUxkgtKnudiLP3BAhsoaDJo7r9V1iZXGKLLqKsQYVpaUshi6riamno2TphNbJxYjDgeYGp2BoYhyYDUEb"
     }
   ],
   "authentication": [
-    "did:static:z5pU4iAPY5v6yrYBMmKjWANNaEdMeV7So7Hor8aynbHpJ47zj3DX6CqjQUAqjHiu4jr6HWFuNzjGcyHzJw3oUfcx5umudmV5H3mArhV4B3ibRgT1dN9H6XifZpaUFuZpeYx8SroRXKncvZhhaBRXBBQ36emZYZ9GuFuqR8C2F5p7ZGGnWiMFqbWckNq1wbbBUxMn4aowDRmcYUKAqZ3VCELRtmoz6PRkMDLo4ZR8Yvo3wwosphukawM2MkNyB1V3aimpAtGG8uiMvShR4Mm2rXn89DAE2u92jNwg2GZ4sCp5xp1tAyAusqUp9f4cbzKQSGsB7RreAVN7Wcox7dvjFUGpDsBEfQ7XbryZmMUfSJ8VPfRB9qhDaLBWF#6MkrCD1c"
+    "did:static:z6Szgfc8oKodkFz5URq5eNRNW7ZPUq5gwQcF9CDA9TMD7SSq2dgaBNpArJ4bzkXDTAHTydL7imPge541AGNFCEZc4f7dLvKFVRwrdFUiSDJykUmLh1GHUxfcYKxvtUDKsSPVDKnJjUHhPbRTEeFKTQdxsyUc4rqSXREX1tGGeJ6DeGq3GgJ1vAf3b92727rfgiZDBtNYMKz3uJp932p8nt9RkdKMaeGk9x5v3ia4nHQwnCWDkm488wVT4GTkpkdZUxkgtKnudiLP3BAhsoaDJo7r9V1iZXGKLLqKsQYVpaUshi6riamno2TphNbJxYjDgeYGp2BoYhyYDUEb#6MkrCD1c"
   ],
   "assertionMethod": [
-    "did:static:z5pU4iAPY5v6yrYBMmKjWANNaEdMeV7So7Hor8aynbHpJ47zj3DX6CqjQUAqjHiu4jr6HWFuNzjGcyHzJw3oUfcx5umudmV5H3mArhV4B3ibRgT1dN9H6XifZpaUFuZpeYx8SroRXKncvZhhaBRXBBQ36emZYZ9GuFuqR8C2F5p7ZGGnWiMFqbWckNq1wbbBUxMn4aowDRmcYUKAqZ3VCELRtmoz6PRkMDLo4ZR8Yvo3wwosphukawM2MkNyB1V3aimpAtGG8uiMvShR4Mm2rXn89DAE2u92jNwg2GZ4sCp5xp1tAyAusqUp9f4cbzKQSGsB7RreAVN7Wcox7dvjFUGpDsBEfQ7XbryZmMUfSJ8VPfRB9qhDaLBWF#6MkrCD1c"
+    "did:static:z6Szgfc8oKodkFz5URq5eNRNW7ZPUq5gwQcF9CDA9TMD7SSq2dgaBNpArJ4bzkXDTAHTydL7imPge541AGNFCEZc4f7dLvKFVRwrdFUiSDJykUmLh1GHUxfcYKxvtUDKsSPVDKnJjUHhPbRTEeFKTQdxsyUc4rqSXREX1tGGeJ6DeGq3GgJ1vAf3b92727rfgiZDBtNYMKz3uJp932p8nt9RkdKMaeGk9x5v3ia4nHQwnCWDkm488wVT4GTkpkdZUxkgtKnudiLP3BAhsoaDJo7r9V1iZXGKLLqKsQYVpaUshi6riamno2TphNbJxYjDgeYGp2BoYhyYDUEb#6MkrCD1c"
   ],
   "keyAgreement": [
-    "did:static:z5pU4iAPY5v6yrYBMmKjWANNaEdMeV7So7Hor8aynbHpJ47zj3DX6CqjQUAqjHiu4jr6HWFuNzjGcyHzJw3oUfcx5umudmV5H3mArhV4B3ibRgT1dN9H6XifZpaUFuZpeYx8SroRXKncvZhhaBRXBBQ36emZYZ9GuFuqR8C2F5p7ZGGnWiMFqbWckNq1wbbBUxMn4aowDRmcYUKAqZ3VCELRtmoz6PRkMDLo4ZR8Yvo3wwosphukawM2MkNyB1V3aimpAtGG8uiMvShR4Mm2rXn89DAE2u92jNwg2GZ4sCp5xp1tAyAusqUp9f4cbzKQSGsB7RreAVN7Wcox7dvjFUGpDsBEfQ7XbryZmMUfSJ8VPfRB9qhDaLBWF#6LSqPZfn"
+    "did:static:z6Szgfc8oKodkFz5URq5eNRNW7ZPUq5gwQcF9CDA9TMD7SSq2dgaBNpArJ4bzkXDTAHTydL7imPge541AGNFCEZc4f7dLvKFVRwrdFUiSDJykUmLh1GHUxfcYKxvtUDKsSPVDKnJjUHhPbRTEeFKTQdxsyUc4rqSXREX1tGGeJ6DeGq3GgJ1vAf3b92727rfgiZDBtNYMKz3uJp932p8nt9RkdKMaeGk9x5v3ia4nHQwnCWDkm488wVT4GTkpkdZUxkgtKnudiLP3BAhsoaDJo7r9V1iZXGKLLqKsQYVpaUshi6riamno2TphNbJxYjDgeYGp2BoYhyYDUEb#6LSqPZfn"
   ],
   "capabilityInvocation": [
-    "did:static:z5pU4iAPY5v6yrYBMmKjWANNaEdMeV7So7Hor8aynbHpJ47zj3DX6CqjQUAqjHiu4jr6HWFuNzjGcyHzJw3oUfcx5umudmV5H3mArhV4B3ibRgT1dN9H6XifZpaUFuZpeYx8SroRXKncvZhhaBRXBBQ36emZYZ9GuFuqR8C2F5p7ZGGnWiMFqbWckNq1wbbBUxMn4aowDRmcYUKAqZ3VCELRtmoz6PRkMDLo4ZR8Yvo3wwosphukawM2MkNyB1V3aimpAtGG8uiMvShR4Mm2rXn89DAE2u92jNwg2GZ4sCp5xp1tAyAusqUp9f4cbzKQSGsB7RreAVN7Wcox7dvjFUGpDsBEfQ7XbryZmMUfSJ8VPfRB9qhDaLBWF#6MkrCD1c"
+    "did:static:z6Szgfc8oKodkFz5URq5eNRNW7ZPUq5gwQcF9CDA9TMD7SSq2dgaBNpArJ4bzkXDTAHTydL7imPge541AGNFCEZc4f7dLvKFVRwrdFUiSDJykUmLh1GHUxfcYKxvtUDKsSPVDKnJjUHhPbRTEeFKTQdxsyUc4rqSXREX1tGGeJ6DeGq3GgJ1vAf3b92727rfgiZDBtNYMKz3uJp932p8nt9RkdKMaeGk9x5v3ia4nHQwnCWDkm488wVT4GTkpkdZUxkgtKnudiLP3BAhsoaDJo7r9V1iZXGKLLqKsQYVpaUshi6riamno2TphNbJxYjDgeYGp2BoYhyYDUEb#6MkrCD1c"
   ],
   "capabilityDelegation": [
-    "did:static:z5pU4iAPY5v6yrYBMmKjWANNaEdMeV7So7Hor8aynbHpJ47zj3DX6CqjQUAqjHiu4jr6HWFuNzjGcyHzJw3oUfcx5umudmV5H3mArhV4B3ibRgT1dN9H6XifZpaUFuZpeYx8SroRXKncvZhhaBRXBBQ36emZYZ9GuFuqR8C2F5p7ZGGnWiMFqbWckNq1wbbBUxMn4aowDRmcYUKAqZ3VCELRtmoz6PRkMDLo4ZR8Yvo3wwosphukawM2MkNyB1V3aimpAtGG8uiMvShR4Mm2rXn89DAE2u92jNwg2GZ4sCp5xp1tAyAusqUp9f4cbzKQSGsB7RreAVN7Wcox7dvjFUGpDsBEfQ7XbryZmMUfSJ8VPfRB9qhDaLBWF#6MkrCD1c"
+    "did:static:z6Szgfc8oKodkFz5URq5eNRNW7ZPUq5gwQcF9CDA9TMD7SSq2dgaBNpArJ4bzkXDTAHTydL7imPge541AGNFCEZc4f7dLvKFVRwrdFUiSDJykUmLh1GHUxfcYKxvtUDKsSPVDKnJjUHhPbRTEeFKTQdxsyUc4rqSXREX1tGGeJ6DeGq3GgJ1vAf3b92727rfgiZDBtNYMKz3uJp932p8nt9RkdKMaeGk9x5v3ia4nHQwnCWDkm488wVT4GTkpkdZUxkgtKnudiLP3BAhsoaDJo7r9V1iZXGKLLqKsQYVpaUshi6riamno2TphNbJxYjDgeYGp2BoYhyYDUEb#6MkrCD1c"
   ],
   "service": [
     {
-      "id": "did:static:z5pU4iAPY5v6yrYBMmKjWANNaEdMeV7So7Hor8aynbHpJ47zj3DX6CqjQUAqjHiu4jr6HWFuNzjGcyHzJw3oUfcx5umudmV5H3mArhV4B3ibRgT1dN9H6XifZpaUFuZpeYx8SroRXKncvZhhaBRXBBQ36emZYZ9GuFuqR8C2F5p7ZGGnWiMFqbWckNq1wbbBUxMn4aowDRmcYUKAqZ3VCELRtmoz6PRkMDLo4ZR8Yvo3wwosphukawM2MkNyB1V3aimpAtGG8uiMvShR4Mm2rXn89DAE2u92jNwg2GZ4sCp5xp1tAyAusqUp9f4cbzKQSGsB7RreAVN7Wcox7dvjFUGpDsBEfQ7XbryZmMUfSJ8VPfRB9qhDaLBWF#didcommmessaging-0",
+      "id": "did:static:z6Szgfc8oKodkFz5URq5eNRNW7ZPUq5gwQcF9CDA9TMD7SSq2dgaBNpArJ4bzkXDTAHTydL7imPge541AGNFCEZc4f7dLvKFVRwrdFUiSDJykUmLh1GHUxfcYKxvtUDKsSPVDKnJjUHhPbRTEeFKTQdxsyUc4rqSXREX1tGGeJ6DeGq3GgJ1vAf3b92727rfgiZDBtNYMKz3uJp932p8nt9RkdKMaeGk9x5v3ia4nHQwnCWDkm488wVT4GTkpkdZUxkgtKnudiLP3BAhsoaDJo7r9V1iZXGKLLqKsQYVpaUshi6riamno2TphNbJxYjDgeYGp2BoYhyYDUEb#didcommmessaging-0",
       "type": "DIDCommMessaging",
       "serviceEndpoint": "didcomm://queue",
       "accept": [
@@ -169,9 +182,9 @@ document.
       "routingKeys": []
     }
   ],
-  "id": "did:static:z5pU4iAPY5v6yrYBMmKjWANNaEdMeV7So7Hor8aynbHpJ47zj3DX6CqjQUAqjHiu4jr6HWFuNzjGcyHzJw3oUfcx5umudmV5H3mArhV4B3ibRgT1dN9H6XifZpaUFuZpeYx8SroRXKncvZhhaBRXBBQ36emZYZ9GuFuqR8C2F5p7ZGGnWiMFqbWckNq1wbbBUxMn4aowDRmcYUKAqZ3VCELRtmoz6PRkMDLo4ZR8Yvo3wwosphukawM2MkNyB1V3aimpAtGG8uiMvShR4Mm2rXn89DAE2u92jNwg2GZ4sCp5xp1tAyAusqUp9f4cbzKQSGsB7RreAVN7Wcox7dvjFUGpDsBEfQ7XbryZmMUfSJ8VPfRB9qhDaLBWF",
+  "id": "did:static:z6Szgfc8oKodkFz5URq5eNRNW7ZPUq5gwQcF9CDA9TMD7SSq2dgaBNpArJ4bzkXDTAHTydL7imPge541AGNFCEZc4f7dLvKFVRwrdFUiSDJykUmLh1GHUxfcYKxvtUDKsSPVDKnJjUHhPbRTEeFKTQdxsyUc4rqSXREX1tGGeJ6DeGq3GgJ1vAf3b92727rfgiZDBtNYMKz3uJp932p8nt9RkdKMaeGk9x5v3ia4nHQwnCWDkm488wVT4GTkpkdZUxkgtKnudiLP3BAhsoaDJo7r9V1iZXGKLLqKsQYVpaUshi6riamno2TphNbJxYjDgeYGp2BoYhyYDUEb",
   "alsoKnownAs": [
-    "did:hash:zQmcpMXmeNv7gV2aSAky3LuLg6Zb357PTwgkYibghdWYNs9"
+    "did:hash:zQmYo5LVNawAdSah8d2inFWFhvCg3eqPiddkzdYx1umJtUx"
   ]
 }
 ```
@@ -199,36 +212,36 @@ value. "Resolving" a `did:hash` value should be done by looking up the
   ],
   "verificationMethod": [
     {
-      "id": "did:hash:zQmcpMXmeNv7gV2aSAky3LuLg6Zb357PTwgkYibghdWYNs9#6LSqPZfn",
+      "id": "did:hash:zQmYo5LVNawAdSah8d2inFWFhvCg3eqPiddkzdYx1umJtUx#6LSqPZfn",
       "type": "X25519KeyAgreementKey2020",
       "publicKeyMultibase": "z6LSqPZfn9krvgXma2icTMKf2uVcYhKXsudCmPoUzqGYW24U",
-      "controller": "did:hash:zQmcpMXmeNv7gV2aSAky3LuLg6Zb357PTwgkYibghdWYNs9"
+      "controller": "did:hash:zQmYo5LVNawAdSah8d2inFWFhvCg3eqPiddkzdYx1umJtUx"
     },
     {
-      "id": "did:hash:zQmcpMXmeNv7gV2aSAky3LuLg6Zb357PTwgkYibghdWYNs9#6MkrCD1c",
+      "id": "did:hash:zQmYo5LVNawAdSah8d2inFWFhvCg3eqPiddkzdYx1umJtUx#6MkrCD1c",
       "type": "Ed25519VerificationKey2020",
       "publicKeyMultibase": "z6MkrCD1csqtgdj8sjrsu8jxcbeyP6m7LiK87NzhfWqio5yr",
-      "controller": "did:hash:zQmcpMXmeNv7gV2aSAky3LuLg6Zb357PTwgkYibghdWYNs9"
+      "controller": "did:hash:zQmYo5LVNawAdSah8d2inFWFhvCg3eqPiddkzdYx1umJtUx"
     }
   ],
   "authentication": [
-    "did:hash:zQmcpMXmeNv7gV2aSAky3LuLg6Zb357PTwgkYibghdWYNs9#6MkrCD1c"
+    "did:hash:zQmYo5LVNawAdSah8d2inFWFhvCg3eqPiddkzdYx1umJtUx#6MkrCD1c"
   ],
   "assertionMethod": [
-    "did:hash:zQmcpMXmeNv7gV2aSAky3LuLg6Zb357PTwgkYibghdWYNs9#6MkrCD1c"
+    "did:hash:zQmYo5LVNawAdSah8d2inFWFhvCg3eqPiddkzdYx1umJtUx#6MkrCD1c"
   ],
   "keyAgreement": [
-    "did:hash:zQmcpMXmeNv7gV2aSAky3LuLg6Zb357PTwgkYibghdWYNs9#6LSqPZfn"
+    "did:hash:zQmYo5LVNawAdSah8d2inFWFhvCg3eqPiddkzdYx1umJtUx#6LSqPZfn"
   ],
   "capabilityInvocation": [
-    "did:hash:zQmcpMXmeNv7gV2aSAky3LuLg6Zb357PTwgkYibghdWYNs9#6MkrCD1c"
+    "did:hash:zQmYo5LVNawAdSah8d2inFWFhvCg3eqPiddkzdYx1umJtUx#6MkrCD1c"
   ],
   "capabilityDelegation": [
-    "did:hash:zQmcpMXmeNv7gV2aSAky3LuLg6Zb357PTwgkYibghdWYNs9#6MkrCD1c"
+    "did:hash:zQmYo5LVNawAdSah8d2inFWFhvCg3eqPiddkzdYx1umJtUx#6MkrCD1c"
   ],
   "service": [
     {
-      "id": "did:hash:zQmcpMXmeNv7gV2aSAky3LuLg6Zb357PTwgkYibghdWYNs9#didcommmessaging-0",
+      "id": "did:hash:zQmYo5LVNawAdSah8d2inFWFhvCg3eqPiddkzdYx1umJtUx#didcommmessaging-0",
       "type": "DIDCommMessaging",
       "serviceEndpoint": "didcomm://queue",
       "accept": [
@@ -238,8 +251,8 @@ value. "Resolving" a `did:hash` value should be done by looking up the
     }
   ],
   "alsoKnownAs": [
-    "did:static:z5pU4iAPY5v6yrYBMmKjWANNaEdMeV7So7Hor8aynbHpJ47zj3DX6CqjQUAqjHiu4jr6HWFuNzjGcyHzJw3oUfcx5umudmV5H3mArhV4B3ibRgT1dN9H6XifZpaUFuZpeYx8SroRXKncvZhhaBRXBBQ36emZYZ9GuFuqR8C2F5p7ZGGnWiMFqbWckNq1wbbBUxMn4aowDRmcYUKAqZ3VCELRtmoz6PRkMDLo4ZR8Yvo3wwosphukawM2MkNyB1V3aimpAtGG8uiMvShR4Mm2rXn89DAE2u92jNwg2GZ4sCp5xp1tAyAusqUp9f4cbzKQSGsB7RreAVN7Wcox7dvjFUGpDsBEfQ7XbryZmMUfSJ8VPfRB9qhDaLBWF"
+    "did:static:z6Szgfc8oKodkFz5URq5eNRNW7ZPUq5gwQcF9CDA9TMD7SSq2dgaBNpArJ4bzkXDTAHTydL7imPge541AGNFCEZc4f7dLvKFVRwrdFUiSDJykUmLh1GHUxfcYKxvtUDKsSPVDKnJjUHhPbRTEeFKTQdxsyUc4rqSXREX1tGGeJ6DeGq3GgJ1vAf3b92727rfgiZDBtNYMKz3uJp932p8nt9RkdKMaeGk9x5v3ia4nHQwnCWDkm488wVT4GTkpkdZUxkgtKnudiLP3BAhsoaDJo7r9V1iZXGKLLqKsQYVpaUshi6riamno2TphNbJxYjDgeYGp2BoYhyYDUEb"
   ],
-  "id": "did:hash:zQmcpMXmeNv7gV2aSAky3LuLg6Zb357PTwgkYibghdWYNs9"
+  "id": "did:hash:zQmYo5LVNawAdSah8d2inFWFhvCg3eqPiddkzdYx1umJtUx"
 }
 ```
