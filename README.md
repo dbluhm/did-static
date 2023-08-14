@@ -70,62 +70,62 @@ did:static:z6Szgfc8oKodkFz5URq5eNRNW7ZPUq5gwQcF9CDA9TMD7SSq2dgaBNpArJ4bzkXDTAHTy
 
 #### Size Stats
 
-- Encode options: replace terms: False index: False flatten keys: False
-    - Encoded (including `did:static:`): 904
-    - Decoded (plain json string, no whitespace): 732
-    - Decoded (plain json string, with whitespace): 769
-    - Decoded Base 58 (json string, no whitespace): 1000
-    - Decoded Base 64 url (json string, no whitespace): 976
-    - Compression (encoded / decoded b64): 0.9262295081967213
-- Encode options: replace terms: False index: False flatten keys: True
-    - Encoded (including `did:static:`): 866
-    - Decoded (plain json string, no whitespace): 732
-    - Decoded (plain json string, with whitespace): 769
-    - Decoded Base 58 (json string, no whitespace): 1000
-    - Decoded Base 64 url (json string, no whitespace): 976
-    - Compression (encoded / decoded b64): 0.8872950819672131
-- Encode options: replace terms: False index: True flatten keys: False
-    - Encoded (including `did:static:`): 852
-    - Decoded (plain json string, no whitespace): 732
-    - Decoded (plain json string, with whitespace): 769
-    - Decoded Base 58 (json string, no whitespace): 1000
-    - Decoded Base 64 url (json string, no whitespace): 976
-    - Compression (encoded / decoded b64): 0.8729508196721312
-- Encode options: replace terms: False index: True flatten keys: True
-    - Encoded (including `did:static:`): 814
-    - Decoded (plain json string, no whitespace): 732
-    - Decoded (plain json string, with whitespace): 769
-    - Decoded Base 58 (json string, no whitespace): 1000
-    - Decoded Base 64 url (json string, no whitespace): 976
-    - Compression (encoded / decoded b64): 0.8340163934426229
-- Encode options: replace terms: True index: False flatten keys: False
-    - Encoded (including `did:static:`): 369
-    - Decoded (plain json string, no whitespace): 732
-    - Decoded (plain json string, with whitespace): 769
-    - Decoded Base 58 (json string, no whitespace): 1000
-    - Decoded Base 64 url (json string, no whitespace): 976
-    - Compression (encoded / decoded b64): 0.3780737704918033
-- Encode options: replace terms: True index: False flatten keys: True
-    - Encoded (including `did:static:`): 331
-    - Decoded (plain json string, no whitespace): 732
-    - Decoded (plain json string, with whitespace): 769
-    - Decoded Base 58 (json string, no whitespace): 1000
-    - Decoded Base 64 url (json string, no whitespace): 976
-    - Compression (encoded / decoded b64): 0.3391393442622951
-- Encode options: replace terms: True index: True flatten keys: False
-    - Encoded (including `did:static:`): 317
-    - Decoded (plain json string, no whitespace): 732
-    - Decoded (plain json string, with whitespace): 769
-    - Decoded Base 58 (json string, no whitespace): 1000
-    - Decoded Base 64 url (json string, no whitespace): 976
-    - Compression (encoded / decoded b64): 0.32479508196721313
-- Encode options: replace terms: True index: True flatten keys: True
-    - Encoded (including `did:static:`): 279
-    - Decoded (plain json string, no whitespace): 732
-    - Decoded (plain json string, with whitespace): 769
-    - Decoded Base 58 (json string, no whitespace): 1000
-    - Decoded Base 64 url (json string, no whitespace): 976
-    - Compression (encoded / decoded b64): 0.2858606557377049
+- **Encode options:** replace terms: False, index: False, flatten keys: False
+    - **Encoded (including `did:static:`):** 904
+    - **Decoded (plain json string, no whitespace):** 732
+    - **Decoded (plain json string, with whitespace):** 769
+    - **Decoded Base 58 (json string, no whitespace):** 1000
+    - **Decoded Base 64 url (json string, no whitespace):** 976
+    - **Compression (encoded / decoded b64):** 92.62%
+- **Encode options:** replace terms: False, index: False, flatten keys: True
+    - **Encoded (including `did:static:`):** 866
+    - **Decoded (plain json string, no whitespace):** 732
+    - **Decoded (plain json string, with whitespace):** 769
+    - **Decoded Base 58 (json string, no whitespace):** 1000
+    - **Decoded Base 64 url (json string, no whitespace):** 976
+    - **Compression (encoded / decoded b64):** 88.73%
+- **Encode options:** replace terms: False, index: True, flatten keys: False
+    - **Encoded (including `did:static:`):** 882
+    - **Decoded (plain json string, no whitespace):** 732
+    - **Decoded (plain json string, with whitespace):** 769
+    - **Decoded Base 58 (json string, no whitespace):** 1000
+    - **Decoded Base 64 url (json string, no whitespace):** 976
+    - **Compression (encoded / decoded b64):** 90.37%
+- **Encode options:** replace terms: False, index: True, flatten keys: True
+    - **Encoded (including `did:static:`):** 844
+    - **Decoded (plain json string, no whitespace):** 732
+    - **Decoded (plain json string, with whitespace):** 769
+    - **Decoded Base 58 (json string, no whitespace):** 1000
+    - **Decoded Base 64 url (json string, no whitespace):** 976
+    - **Compression (encoded / decoded b64):** 86.48%
+- **Encode options:** replace terms: True, index: False, flatten keys: False
+    - **Encoded (including `did:static:`):** 369
+    - **Decoded (plain json string, no whitespace):** 732
+    - **Decoded (plain json string, with whitespace):** 769
+    - **Decoded Base 58 (json string, no whitespace):** 1000
+    - **Decoded Base 64 url (json string, no whitespace):** 976
+    - **Compression (encoded / decoded b64):** 37.81%
+- **Encode options:** replace terms: True, index: False, flatten keys: True
+    - **Encoded (including `did:static:`):** 331
+    - **Decoded (plain json string, no whitespace):** 732
+    - **Decoded (plain json string, with whitespace):** 769
+    - **Decoded Base 58 (json string, no whitespace):** 1000
+    - **Decoded Base 64 url (json string, no whitespace):** 976
+    - **Compression (encoded / decoded b64):** 33.91%
+- **Encode options:** replace terms: True, index: True, flatten keys: False
+    - **Encoded (including `did:static:`):** 347
+    - **Decoded (plain json string, no whitespace):** 732
+    - **Decoded (plain json string, with whitespace):** 769
+    - **Decoded Base 58 (json string, no whitespace):** 1000
+    - **Decoded Base 64 url (json string, no whitespace):** 976
+    - **Compression (encoded / decoded b64):** 35.55%
+- **Encode options:** replace terms: True, index: True, flatten keys: True
+    - **Encoded (including `did:static:`):** 309
+    - **Decoded (plain json string, no whitespace):** 732
+    - **Decoded (plain json string, with whitespace):** 769
+    - **Decoded Base 58 (json string, no whitespace):** 1000
+    - **Decoded Base 64 url (json string, no whitespace):** 976
+    - **Compression (encoded / decoded b64):** 31.66%
 
 As visible in these stats, it's important to use the `replace_terms` encoding
 option to see a significant overall reduction in size. The other options offer

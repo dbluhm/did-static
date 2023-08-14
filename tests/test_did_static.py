@@ -101,28 +101,28 @@ def test_compression(replace_terms, index, flatten_keys):
         decoded_len_b64 = len(
             urlsafe_b64encode(json.dumps(decoded, separators=(",", ":")).encode())
         )
-        print("    - Encoded (including `did:static:`):", encoded_len)
+        print("    - **Encoded (including `did:static:`):**", encoded_len)
         print(
-            "    - Decoded (plain json string, no whitespace):",
+            "    - **Decoded (plain json string, no whitespace):**",
             decoded_len_no_whitespace,
         )
-        print("    - Decoded (plain json string, with whitespace):", decoded_len)
-        print("    - Decoded Base 58 (json string, no whitespace):", decoded_len_b58)
+        print("    - **Decoded (plain json string, with whitespace):**", decoded_len)
         print(
-            "    - Decoded Base 64 url (json string, no whitespace):", decoded_len_b64
+            "    - **Decoded Base 58 (json string, no whitespace):**", decoded_len_b58
         )
         print(
-            "    - Compression (encoded / decoded b64):", encoded_len / decoded_len_b64
+            "    - **Decoded Base 64 url (json string, no whitespace):**",
+            decoded_len_b64,
+        )
+        print(
+            "    - **Compression (encoded / decoded b64):**",
+            "{:.2%}".format(encoded_len / decoded_len_b64),
         )
 
     print()
     print(
-        "- Encode options: replace terms:",
-        replace_terms,
-        "index:",
-        index,
-        "flatten keys:",
-        flatten_keys,
+        f"- **Encode options:** replace terms: {replace_terms}, "
+        f"index: {index}, flatten keys: {flatten_keys}"
     )
     _report_compression(
         encode(DOC, replace_terms=replace_terms, index=index, flatten_keys=flatten_keys)
