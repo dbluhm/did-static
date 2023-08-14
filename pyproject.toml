@@ -10,7 +10,7 @@ packages = [{include = "did_static"}]
 [tool.poetry.dependencies]
 python = "^3.9"
 msgpack = "^1.0.4"
-multiformats = "^0.1.4.post3"
+multiformats = "^0.2.1"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -82,7 +82,11 @@ class Bundle:
     @classmethod
     def deserialize(cls, encoded: str) -> "Bundle":
         wrapped = multibase.decode(encoded)
-        _, bundle_bytes = multicodec.unwrap(wrapped)
+        codec, bundle_bytes = multicodec.unwrap(wrapped)
+
+        if codec.name != "messagepack":
+            raise ValueError(f"Invalid codec: {codec}")
+
         bundle = unpackb(bundle_bytes, strict_map_key=False)
         if len(bundle) > 3:
             version, options, doc, index = bundle
